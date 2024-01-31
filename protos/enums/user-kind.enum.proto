@@ -1,0 +1,7 @@
+syntax = "proto3";
+
+enum UserKind {
+    Local = 0;
+    Google = 1;
+    Facebook = 2;
+}

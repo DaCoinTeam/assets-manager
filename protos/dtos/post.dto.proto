@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+import "user.dto.proto";
+import "course.dto.proto";
+
+message Post {
+    string postId = 1;
+    string title = 2;
+    string creatorId = 3;
+    string courseId = 4;
+    string createdAt = 5;
+    string updatedAt = 6;
+    Course course = 7;
+    User creator = 8;
+    repeated PostContentEntity postContents = 9;
+    repeated PostCommentEntity postComments = 10;
+    repeated PostLikeEntity postLikes = 11;
+}
+
+message PostContentEntity{}
+
+message PostCommentEntity{}
+
+message PostLikeEntity{}

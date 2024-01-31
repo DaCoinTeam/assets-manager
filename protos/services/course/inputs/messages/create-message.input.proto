@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+import "../../../../base/file.base.proto";
+import "../data/create-data.input.proto";
+
+message CreateMessage {
+    string userId = 1;
+    CreateData data = 2;
+    repeated File files = 3;
+ }

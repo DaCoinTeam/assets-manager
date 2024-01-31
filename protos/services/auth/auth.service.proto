@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package auth;
+
+import "./inputs/request-bodies/sign-in-request-body.input.proto";
+import "./inputs/request-bodies/sign-up-request-body.input.proto";
+import "./inputs/data/verify-google-access-token-data.input.proto";
+
+import "../../dtos/user.dto.proto";
+
+service AuthService {
+  rpc SignIn (SignInRequestBody) returns (User) {}
+  rpc SignUp (SignUpRequestBody) returns (User) {}
+  rpc VerifyGoogleAccessToken(VerifyGoogleAccessTokenData) returns (User) {}
+//  rpc Init(UserId) returns (User) {}
+}
+
+

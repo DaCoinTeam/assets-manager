@@ -1,0 +1,6 @@
+syntax = "proto3";
+
+message AuthTokens {
+    string accessToken = 1;
+    string refreshToken = 2;
+}

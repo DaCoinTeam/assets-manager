@@ -1,0 +1,7 @@
+syntax = "proto3";
+
+enum UserRole {
+  User = 0;
+  Moderator = 1;
+  Administrator = 2;
+}
