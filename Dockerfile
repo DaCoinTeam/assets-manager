@@ -11,8 +11,8 @@ ARG NODE_VERSION=20.10.0
 FROM node:${NODE_VERSION}-alpine as base
 
 # Set working directory for all build stages.
-RUN mkdir -p /usr/src/cistudy-service-restful
-WORKDIR /usr/src/cistudy-service-restful
+RUN mkdir -p /usr/src/assets-manager
+WORKDIR /usr/src/assets-manager
 
 ################################################################################
 # Create a stage for installing production dependecies.
@@ -61,17 +61,13 @@ USER node
 # Copy package.json so that package manager commands can be used.
 COPY package.json .
 
-#copy proto folder
-RUN mkdir -p /usr/src/cistudy-service-restful/protos
-COPY protos /usr/src/cistudy-service-restful/protos
-
 # Copy the production dependencies from the deps stage and also
 # the built application from the build stage into the image.
-COPY --from=deps /usr/src/cistudy-service-restful/node_modules ./node_modules
-COPY --from=build /usr/src/cistudy-service-restful/dist ./dist
+COPY --from=deps /usr/src/assets-manager/node_modules ./node_modules
+COPY --from=build /usr/src/assets-manager/dist ./dist
 
 # Expose the port that the application listens on.
-EXPOSE 3002
+EXPOSE 3004
 
 # Run the application.
 CMD npm run start:prod
