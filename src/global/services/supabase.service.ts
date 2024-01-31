@@ -22,7 +22,7 @@ export default class SupabaseService implements OnModuleInit {
     async upload(
         file: SerializableFile,
         customMetadata?: Metadata,
-        callback?: () => Promise<void>,
+        callback?: (assetId: string, fileName: string) => Promise<void>,
     ): Promise<Metadata> {
         const assetId = uuid4()
         const { fileName, fileBody } = file
@@ -31,11 +31,11 @@ export default class SupabaseService implements OnModuleInit {
             upsert: true,
         })
 
-        if (callback) await callback()
+        if (callback) await callback(assetId, fileName)
 
         const metadata = customMetadata ?? {
             assetId,
-            fileName,   
+            fileName,
             extname: extname(fileName),
         }
 
