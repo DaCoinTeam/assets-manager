@@ -33,7 +33,7 @@ export default class SupabaseService implements OnModuleInit {
 
         if (callback) await callback()
 
-        const extName = extname(fileName).substring(1)
+        const extName = extname(fileName)
         const metadata = customMetadata ?? {
             assetId,
             fileName,
