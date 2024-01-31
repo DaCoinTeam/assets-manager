@@ -4,4 +4,4 @@ import { UploadModule } from "./upload"
 @Module({
     imports: [UploadModule],
 })
-export default class ServicesModule {}
+export default class FeaturesModule {}

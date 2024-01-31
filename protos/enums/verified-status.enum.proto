@@ -1,7 +1,0 @@
-syntax = "proto3";
-
-enum VerifiedStatus {
-    Pending = 0;
-    Approved = 1;
-    Rejected = 2;
-  }

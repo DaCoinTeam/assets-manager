@@ -1,5 +1,0 @@
-syntax = "proto3";
-
-message VerifyGoogleAccessTokenData {
-    string token = 1;
-}

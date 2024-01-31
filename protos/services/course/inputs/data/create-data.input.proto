@@ -1,5 +1,0 @@
-syntax = "proto3";
-
-message CreateData {
-    string title = 1;
-}

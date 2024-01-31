@@ -2,7 +2,7 @@ import { Module } from "@nestjs/common"
 import { ConfigModule } from "@nestjs/config"
 import { servicesConfig } from "@config"
 import { GlobalModule } from "@global"
-import { ServicesModule } from "@services"
+import { FeaturesModule } from "@features"
 
 @Module({
     imports: [
@@ -11,7 +11,7 @@ import { ServicesModule } from "@services"
         }),
 
         GlobalModule,
-        ServicesModule,
+        FeaturesModule,
     ],
     controllers: [],
     providers: [

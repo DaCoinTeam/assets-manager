@@ -19,7 +19,7 @@
     "noFallthroughCasesInSwitch": false,
     "paths": {
       "@config": ["src/config"],
-      "@services": ["src/services"],
+      "@features": ["src/features"],
       "@global": ["src/global"],
       "@common": ["src/common"],
     },

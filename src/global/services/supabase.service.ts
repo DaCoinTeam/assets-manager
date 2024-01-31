@@ -33,11 +33,10 @@ export default class SupabaseService implements OnModuleInit {
 
         if (callback) await callback()
 
-        const extName = extname(fileName)
         const metadata = customMetadata ?? {
             assetId,
-            fileName,
-            extName,
+            fileName,   
+            extname: extname(fileName),
         }
 
         await this.bucket.upload(
