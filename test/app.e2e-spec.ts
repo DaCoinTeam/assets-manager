@@ -41,7 +41,7 @@ describe("App", () => {
             const res = await client
                 .send("upload", {
                     fileName: "hentaiz.json",
-                    buffer: fakeBuffer,
+                    fileBody: fakeBuffer,
                 })
                 .toPromise()
             console.log(res)

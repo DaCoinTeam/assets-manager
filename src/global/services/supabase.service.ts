@@ -21,7 +21,8 @@ export default class SupabaseService implements OnModuleInit {
 
     async upload(
         file: SerializableFile,
-        createMetadata: boolean = true,
+        customMetadata?: Metadata,
+        callback?: () => Promise<void>,
     ): Promise<Metadata> {
         const assetId = uuid4()
         const { fileName, fileBody } = file
@@ -30,17 +31,23 @@ export default class SupabaseService implements OnModuleInit {
             upsert: true,
         })
 
+        if (callback) await callback()
+
         const extName = extname(fileName)
-        const metadata: Metadata = {
+        const metadata = customMetadata ?? {
             assetId,
             fileName,
             extName,
         }
-        if (createMetadata) {
-            await this.bucket.upload(join(assetId, "metadata.json"), JSON.stringify(metadata), {
+
+        await this.bucket.upload(
+            join(assetId, "metadata.json"),
+            JSON.stringify(metadata),
+            {
                 upsert: true,
-            })
-        }
+            },
+        )
+
         return metadata
     }
 }
