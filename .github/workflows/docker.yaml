@@ -14,4 +14,4 @@ jobs:
       uses: actions/checkout@v2 
 
     - name: Run Docker compose command
-      run: docker compose up --build
+      run: docker compose up --build -d
