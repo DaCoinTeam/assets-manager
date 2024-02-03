@@ -1,17 +1,17 @@
-import { SupabaseService } from "@global"
 import { Controller } from "@nestjs/common"
 import { MessagePattern } from "@nestjs/microservices"
 import { UploadInput } from "./shared/inputs"
+import UploadService from "./upload.service"
 
 @Controller()
 export default class UploadController {
     constructor(
-        private readonly supabaseService : SupabaseService
+        private readonly uploadService : UploadService
     ) {
 
     }
     @MessagePattern("upload")
     async upload(input: UploadInput) {
-        return this.supabaseService.upload(input)
+        return this.uploadService.upload(input)
     }
 }

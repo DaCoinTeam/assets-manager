@@ -1,17 +1,17 @@
-import { SupabaseService } from "@global"
 import { Controller } from "@nestjs/common"
 import { MessagePattern } from "@nestjs/microservices"
 import { GetInput } from "./shared"
+import GetService from "./get.service"
 
 @Controller()
 export default class GetController {
     constructor(
-        private readonly supabaseService: SupabaseService
+        private readonly getService: GetService
     ) {
 
     }
     @MessagePattern("get")
     async get(input: GetInput) {
-        return this.supabaseService.get(input.assetPath)
+        return this.getService.get(input)
     }
 }

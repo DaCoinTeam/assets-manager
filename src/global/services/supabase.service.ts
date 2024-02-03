@@ -3,7 +3,7 @@ import { Injectable, OnModuleInit } from "@nestjs/common"
 import { createClient } from "@supabase/supabase-js"
 import StorageFileApi from "@supabase/storage-js/dist/module/packages/StorageFileApi"
 import { SerializableFile, Metadata } from "@common"
-import { v4 as uuid4 } from "uuid"
+import { v4 as uuid4, validate as validateUuid4 } from "uuid"
 import { extname, join, basename } from "path"
 
 @Injectable()
@@ -20,6 +20,28 @@ export default class SupabaseService implements OnModuleInit {
     }
 
     async get(
+        assetIdOrPath: string
+    ): Promise<SerializableFile> {
+        if (validateUuid4(assetIdOrPath))
+            return this.getFromAssetId(assetIdOrPath)
+        return this.getFromAssetPath(assetIdOrPath)
+    }
+
+    private async getFromAssetId(
+        assetId: string
+    ): Promise<SerializableFile> {
+        const { data } = await this.bucket.download(join(assetId, "metadata.json"))
+        const text = await data.text()
+        const { fileName } = JSON.parse(text) as Metadata
+        const { data: fileData } = await this.bucket.download(join(assetId, fileName))
+        const arrayBuffer = await fileData.arrayBuffer()
+        return {
+            fileName,
+            fileBody: Buffer.from(arrayBuffer)
+        }
+    }
+
+    private async getFromAssetPath(
         assetPath: string
     ): Promise<SerializableFile> {
         const fileName = basename(assetPath)
@@ -27,9 +49,8 @@ export default class SupabaseService implements OnModuleInit {
         const { data } = await this.bucket.download(assetPath)
         const arrayBuffer = await data.arrayBuffer()
 
-
         return {
-            fileName: fileName,
+            fileName,
             fileBody: Buffer.from(arrayBuffer)
         }
     }

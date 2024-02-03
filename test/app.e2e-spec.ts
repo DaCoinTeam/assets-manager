@@ -53,7 +53,7 @@ describe("App", () => {
         it("Should get success", async () => {
             const res = await lastValueFrom(client
                 .send("get", {
-                    assetPath: "cd3420d1-692e-4353-b129-33a411c17c70/metadata.json",
+                    assetIdOrPath: "cd3420d1-692e-4353-b129-33a411c17c70",
                 }))
             console.log(res)
         })
