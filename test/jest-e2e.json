@@ -8,9 +8,9 @@
   },
   "transformIgnorePatterns": ["^.+\\.js$"],
   "moduleNameMapper": {
-    "@config": "D:/CiStudy/assets-manager/src/config",
-    "@global": "D:/CiStudy/assets-manager/src/global",
-    "@services": "D:/CiStudy/assets-manager/src/services",
-    "@common": "D:/CiStudy/assets-manager/src/common"
+    "@config": "D:/projects/assets-manager/src/config",
+    "@global": "D:/projects/assets-manager/src/global",
+    "@features": "D:/projects/assets-manager/src/features",
+    "@common": "D:/projects/assets-manager/src/common"
   }
 }

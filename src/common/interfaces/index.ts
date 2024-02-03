@@ -11,5 +11,5 @@ export {
     AuthTokens,
     SerializableFile,
     SerializableFormData,
-    Metadata
+    Metadata,
 }

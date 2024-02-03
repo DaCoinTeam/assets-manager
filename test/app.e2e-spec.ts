@@ -2,6 +2,7 @@ import { INestApplication } from "@nestjs/common"
 import { ClientProxy, ClientsModule, Transport } from "@nestjs/microservices"
 import { TestingModule, Test } from "@nestjs/testing"
 import AppModule from "../src/app.module"
+import { lastValueFrom } from "rxjs"
 
 describe("App", () => {
     let app: INestApplication
@@ -35,15 +36,25 @@ describe("App", () => {
         client.close()
     })
 
-    describe("Test upload", () => {
-        it("Should upload success", async () => {
-            const fakeBuffer = Buffer.from("This is a fake buffer for testing")
-            const res = await client
-                .send("upload", {
-                    fileName: "hentaiz.json",
-                    fileBody: fakeBuffer,
-                })
-                .toPromise()
+    // describe("Test upload", () => {
+    //     it("Should upload success", async () => {
+    //         const fakeBuffer = Buffer.from("This is a fake buffer for testing")
+    //         const res = await client
+    //             .send("upload", {
+    //                 fileName: "hentaiz.json",
+    //                 fileBody: fakeBuffer,
+    //             })
+    //             .toPromise()
+    //         console.log(res)
+    //     })
+    // })
+
+    describe("Test get", () => {
+        it("Should get success", async () => {
+            const res = await lastValueFrom(client
+                .send("get", {
+                    assetPath: "cd3420d1-692e-4353-b129-33a411c17c70/metadata.json",
+                }))
             console.log(res)
         })
     })

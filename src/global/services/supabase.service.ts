@@ -4,11 +4,11 @@ import { createClient } from "@supabase/supabase-js"
 import StorageFileApi from "@supabase/storage-js/dist/module/packages/StorageFileApi"
 import { SerializableFile, Metadata } from "@common"
 import { v4 as uuid4 } from "uuid"
-import { extname, join } from "path"
+import { extname, join, basename } from "path"
 
 @Injectable()
 export default class SupabaseService implements OnModuleInit {
-    constructor() {}
+    constructor() { }
 
     private bucket: StorageFileApi
     onModuleInit() {
@@ -17,6 +17,21 @@ export default class SupabaseService implements OnModuleInit {
             servicesConfig().supabase.key,
         )
         this.bucket = supabase.storage.from("cistudy")
+    }
+
+    async get(
+        assetPath: string
+    ): Promise<SerializableFile> {
+        const fileName = basename(assetPath)
+
+        const { data } = await this.bucket.download(assetPath)
+        const arrayBuffer = await data.arrayBuffer()
+
+
+        return {
+            fileName: fileName,
+            fileBody: Buffer.from(arrayBuffer)
+        }
     }
 
     async upload(
