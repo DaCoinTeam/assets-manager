@@ -5,6 +5,7 @@ import StorageFileApi from "@supabase/storage-js/dist/module/packages/StorageFil
 import { SerializableFile, Metadata } from "@common"
 import { v4 as uuid4, validate as validateUuid4 } from "uuid"
 import { extname, join, basename } from "path"
+import { RpcException } from "@nestjs/microservices"
 
 @Injectable()
 export default class SupabaseService implements OnModuleInit {
@@ -56,9 +57,7 @@ export default class SupabaseService implements OnModuleInit {
     }
 
     async upload(
-        file: SerializableFile,
-        customMetadata?: Metadata,
-        callback?: (assetId: string, fileName: string) => Promise<void>,
+        file: SerializableFile
     ): Promise<Metadata> {
         const assetId = uuid4()
         const { fileName, fileBody } = file
@@ -67,9 +66,7 @@ export default class SupabaseService implements OnModuleInit {
             upsert: true,
         })
 
-        if (callback) await callback(assetId, fileName)
-
-        const metadata = customMetadata ?? {
+        const metadata: Metadata = {
             assetId,
             fileName,
             extname: extname(fileName),
@@ -80,9 +77,37 @@ export default class SupabaseService implements OnModuleInit {
             JSON.stringify(metadata),
             {
                 upsert: true,
-            },
+            }, 
         )
 
         return metadata
+    }
+
+    async uploadExisted(
+        file: SerializableFile,
+        dir: string,
+        overrideMetadata: boolean = false
+    ) {
+        const { fileName, fileBody } = file
+
+        if (overrideMetadata) {
+            if (!validateUuid4(dir)) throw new RpcException("Dir is not root.")
+            const metadata: Metadata = {
+                assetId: dir, 
+                fileName,
+                extname: extname(fileName),
+            }
+            await this.bucket.upload(
+                join(dir, "metadata.json"),
+                JSON.stringify(metadata),
+                {
+                    upsert: true,
+                },
+            )
+        }
+
+        return await this.bucket.upload(join(dir, fileName), fileBody, {
+            upsert: true,
+        })
     }
 }

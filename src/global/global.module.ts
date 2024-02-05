@@ -6,5 +6,6 @@ import { SupabaseService } from "./services"
     imports: [],
     exports: [SupabaseService],
     providers: [SupabaseService],
-})
+}) 
 export default class GlobalModule {}
+ 
