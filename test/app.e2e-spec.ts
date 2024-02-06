@@ -1,9 +1,15 @@
 import { INestApplication } from "@nestjs/common"
-import { ClientProxy, ClientsModule, Transport } from "@nestjs/microservices"
+import { ClientProxy, ClientsModule, Deserializer, Transport } from "@nestjs/microservices"
 import { TestingModule, Test } from "@nestjs/testing"
 import AppModule from "../src/app.module"
 import { lastValueFrom } from "rxjs"
 
+export class BaseDeserializer implements Deserializer<object, object> {
+    deserialize(value: object, options?: Record<string, any>): object | Promise<object> {
+        console.log(value)
+        return {cuong:"chim"}
+    }
+}
 describe("App", () => {
     let app: INestApplication
     let client: ClientProxy
@@ -22,6 +28,11 @@ describe("App", () => {
 
         app.connectMicroservice({
             transport: Transport.TCP,
+            options: {
+                //  host: "0.0.0.0",
+                //  port: 3004,
+                deserializer: new BaseDeserializer()
+            },
         })
 
         await app.startAllMicroservices()
@@ -36,26 +47,25 @@ describe("App", () => {
         client.close()
     })
 
-    // describe("Test upload", () => {
-    //     it("Should upload success", async () => {
-    //         const fakeBuffer = Buffer.from("This is a fake buffer for testing")
-    //         const res = await client
-    //             .send("upload", {
-    //                 fileName: "hentaiz.json",
-    //                 fileBody: fakeBuffer,
-    //             })
-    //             .toPromise()
-    //         console.log(res)
-    //     })
-    // })
-
-    describe("Test get", () => {
-        it("Should get success", async () => {
+    describe("Test upload", () => {
+        it("Should upload success", async () => {
+            const fakeBuffer = Buffer.from("This is a fake buffer for testing")
             const res = await lastValueFrom(client
-                .send("get", {
-                    assetIdOrPath: "cd3420d1-692e-4353-b129-33a411c17c70",
+                .send("upload", {
+                    fileName: "hentaiz.json",
+                    fileBody: fakeBuffer,
                 }))
             console.log(res)
         })
     })
+
+    // describe("Test get", () => {
+    //     it("Should get success", async () => {
+    //         const res = await lastValueFrom(client
+    //             .send("get", {
+    //                 assetIdOrPath: "cd3420d1-692e-4353-b129-33a411c17c70",
+    //             }))
+    //         console.log(res)
+    //     })
+    // })
 })

@@ -1,5 +1,5 @@
 import { Controller } from "@nestjs/common"
-import { MessagePattern } from "@nestjs/microservices"
+import { GrpcMethod } from "@nestjs/microservices"
 import { GetInput } from "./shared"
 import ReadService from "./read.service"
 
@@ -7,10 +7,9 @@ import ReadService from "./read.service"
 export default class ReadController {
     constructor(
         private readonly readService: ReadService
-    ) {
+    ) { }
 
-    }
-    @MessagePattern("get")
+    @GrpcMethod("ReadService", "get")
     async get(input: GetInput) {
         return this.readService.get(input)
     }

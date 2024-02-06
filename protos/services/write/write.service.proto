@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package write;
+
+import "./inputs/update.input.proto";
+import "../../base/file.base.proto";
+import "../../base/metadata.base.proto";
+import "../../base/message-response.base.proto";
+
+service WriteService {
+  rpc upload(File) returns (Metadata) {}
+  rpc uploadMetadata(Metadata) returns (MessageResponse) {}
+  rpc update(UpdateInput) returns (MessageResponse) {}
+}
+
+
+

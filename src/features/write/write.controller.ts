@@ -1,5 +1,5 @@
 import { Controller } from "@nestjs/common"
-import { MessagePattern } from "@nestjs/microservices"
+import { GrpcMethod } from "@nestjs/microservices"
 import { UploadInput, UpdateInput, UploadMetadataInput } from "./shared"
 import WriteService from "./write.service"
 
@@ -9,18 +9,19 @@ export default class WriteController {
         private readonly writeService: WriteService
     ) { }
 
-    @MessagePattern("upload")
+    @GrpcMethod("WriteService", "upload")
     async upload(input: UploadInput) {
-        return this.writeService.upload(input)
+        return await this.writeService.upload(input)
     }
 
-    @MessagePattern("update")
+    @GrpcMethod("WriteService", "update")
     async update(input: UpdateInput) {
-        return this.writeService.update(input)
+        console.log(input)
+        return await this.writeService.update(input)
     }
     
-    @MessagePattern("upload-metadata")
+    @GrpcMethod("WriteService", "uploadMetadata")
     async uploadMetadata(input: UploadMetadataInput) {
-        return this.writeService.uploadMetadata(input)
+        return await this.writeService.uploadMetadata(input)
     }
 }

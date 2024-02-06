@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package read;
+
+import "./inputs/get.input.proto";
+import "../../base/file.base.proto";
+
+service ReadService {
+  rpc get(GetInput) returns (File) {}
+}
+
+
+

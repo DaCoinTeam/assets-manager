@@ -1,15 +1,20 @@
 import { NestFactory } from "@nestjs/core"
 import AppModule from "./app.module"
-import { MicroserviceOptions, Transport } from "@nestjs/microservices"
-
+import { GrpcOptions, Transport } from "@nestjs/microservices"
+import { join } from "path"
 const bootstrap = async () => {
-    const app = await NestFactory.createMicroservice<MicroserviceOptions>(
+    const app = await NestFactory.createMicroservice<GrpcOptions>(
         AppModule,
         {
-            transport: Transport.TCP,
+            transport: Transport.GRPC,
             options: {
-                host: "0.0.0.0",
-                port: 3004,
+                maxReceiveMessageLength: 1024 * 1024 * 1024 * 5,
+                url: "0.0.0.0:3004",
+                package: ["read", "write"],
+                protoPath: [
+                    join("protos", "services", "read", "read.service.proto"),
+                    join("protos", "services", "write", "write.service.proto")
+                ]
             },
         },
     )

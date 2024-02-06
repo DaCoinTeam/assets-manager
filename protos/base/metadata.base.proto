@@ -1,0 +1,7 @@
+syntax = "proto3";
+
+message Metadata {
+    string assetId = 1;
+    string fileName = 2;
+    string extname = 3;
+}

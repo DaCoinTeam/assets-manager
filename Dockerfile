@@ -61,6 +61,10 @@ USER node
 # Copy package.json so that package manager commands can be used.
 COPY package.json .
 
+#copy proto folder
+RUN mkdir -p /usr/src/assets-manager/protos
+COPY protos /usr/src/assets-manager/protos
+
 # Copy the production dependencies from the deps stage and also
 # the built application from the build stage into the image.
 COPY --from=deps /usr/src/assets-manager/node_modules ./node_modules

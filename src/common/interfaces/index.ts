@@ -5,6 +5,7 @@ import SerializableFile from "./serializable-file.interface"
 import SerializableFormData from "./serializable-form-data.interface"
 import Metadata from "./metadata.interface"
 import FileAndSubdirectory from "./file-and-subdirectory.interface"
+import MessageResponse from "./message-response.interface"
 
 export {
     Payload,
@@ -13,5 +14,6 @@ export {
     SerializableFile,
     SerializableFormData,
     Metadata,
-    FileAndSubdirectory
+    FileAndSubdirectory,
+    MessageResponse
 }
