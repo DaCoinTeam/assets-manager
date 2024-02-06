@@ -16,10 +16,9 @@ export default class WriteController {
 
     @MessagePattern("update")
     async update(input: UpdateInput) {
-        console.log(input)
         return this.writeService.update(input)
     }
-
+    
     @MessagePattern("upload-metadata")
     async uploadMetadata(input: UploadMetadataInput) {
         return this.writeService.uploadMetadata(input)
