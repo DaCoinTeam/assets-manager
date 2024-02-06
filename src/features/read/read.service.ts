@@ -3,7 +3,7 @@ import { Injectable } from "@nestjs/common"
 import { GetInput } from "./shared"
 
 @Injectable()
-export default class GetService {
+export default class ReadService {
     constructor(
         private readonly supabaseService: SupabaseService
     ) {}

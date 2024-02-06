@@ -2,10 +2,9 @@ import { servicesConfig } from "@config"
 import { Injectable, OnModuleInit } from "@nestjs/common"
 import { createClient } from "@supabase/supabase-js"
 import StorageFileApi from "@supabase/storage-js/dist/module/packages/StorageFileApi"
-import { SerializableFile, Metadata } from "@common"
+import { SerializableFile, Metadata, FileAndSubdirectory } from "@common"
 import { v4 as uuid4, validate as validateUuid4 } from "uuid"
 import { extname, join, basename } from "path"
-import { RpcException } from "@nestjs/microservices"
 
 @Injectable()
 export default class SupabaseService implements OnModuleInit {
@@ -56,8 +55,20 @@ export default class SupabaseService implements OnModuleInit {
         }
     }
 
+    async uploadMetadata(metadata: Metadata) {
+        const { assetId } = metadata
+        await this.bucket.upload(
+            join(assetId, "metadata.json"),
+            JSON.stringify(metadata),
+            {
+                upsert: true,
+            },
+        )
+        return "Update metadata successfully"
+    }
+
     async upload(
-        file: SerializableFile
+        file: SerializableFile,
     ): Promise<Metadata> {
         const assetId = uuid4()
         const { fileName, fileBody } = file
@@ -72,42 +83,21 @@ export default class SupabaseService implements OnModuleInit {
             extname: extname(fileName),
         }
 
-        await this.bucket.upload(
-            join(assetId, "metadata.json"),
-            JSON.stringify(metadata),
-            {
-                upsert: true,
-            }, 
-        )
-
+        await this.uploadMetadata(metadata)
         return metadata
     }
 
-    async uploadExisted(
-        file: SerializableFile,
-        dir: string,
-        overrideMetadata: boolean = false
+    async update(
+        assetId: string,
+        fileAndSubdirectories: FileAndSubdirectory[] = []
     ) {
-        const { fileName, fileBody } = file
-
-        if (overrideMetadata) {
-            if (!validateUuid4(dir)) throw new RpcException("Dir is not root.")
-            const metadata: Metadata = {
-                assetId: dir, 
-                fileName,
-                extname: extname(fileName),
-            }
-            await this.bucket.upload(
-                join(dir, "metadata.json"),
-                JSON.stringify(metadata),
-                {
-                    upsert: true,
-                },
-            )
+        for (const { file, subdir } of fileAndSubdirectories) {
+            const dir = subdir ? join(assetId, subdir) : assetId
+            await this.bucket.upload(join(dir, file.fileName), file.fileBody, {
+                upsert: true,
+            })
         }
-
-        return await this.bucket.upload(join(dir, fileName), fileBody, {
-            upsert: true,
-        })
+        return `Update ${fileAndSubdirectories.length} files successfully.`
     }
 }
+   

@@ -1,8 +1,8 @@
 import { Module } from "@nestjs/common"
-import { UploadModule } from "./upload"
-import { GetModule } from "./get"
+import { WriteModule } from "./write"
+import { ReadModule } from "./read"
 
 @Module({
-    imports: [UploadModule, GetModule],
+    imports: [WriteModule, ReadModule],
 })
 export default class FeaturesModule {}

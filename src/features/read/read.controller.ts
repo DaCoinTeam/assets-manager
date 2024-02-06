@@ -1,17 +1,17 @@
 import { Controller } from "@nestjs/common"
 import { MessagePattern } from "@nestjs/microservices"
 import { GetInput } from "./shared"
-import GetService from "./get.service"
+import ReadService from "./read.service"
 
 @Controller()
-export default class GetController {
+export default class ReadController {
     constructor(
-        private readonly getService: GetService
+        private readonly readService: ReadService
     ) {
 
     }
     @MessagePattern("get")
     async get(input: GetInput) {
-        return this.getService.get(input)
+        return this.readService.get(input)
     }
 }
